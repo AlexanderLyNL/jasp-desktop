@@ -118,6 +118,7 @@ SOURCES += $$PWD/main.cpp \
         $$PWD/analysisforms/binomialtestbayesianform.cpp \
         $$PWD/analysisforms/bffromtform.cpp \
         $$PWD/ribbons/ribbonsummarystatistics.cpp \
+        $$PWD/ribbons/ribbonbain.cpp \
         $$PWD/variableswidget.cpp \
         $$PWD/variablespage/levelstablemodel.cpp \
         $$PWD/variablespage/variablestablemodel.cpp \
@@ -170,9 +171,12 @@ SOURCES += $$PWD/main.cpp \
         $$PWD/analysisforms/SummaryStatistics/summarystatsbinomialtestbayesianform.cpp \
         $$PWD/analysisforms/SummaryStatistics/summarystatsregressionlinearbayesianform.cpp \
         $$PWD/analysisforms/SummaryStatistics/summarystatscorrelationbayesianpairsform.cpp \
+        $$PWD/analysisforms/Bain/bainttestbayesianindependentsamplesform.cpp \
+        $$PWD/analysisforms/Bain/bainttestbayesianonesampleform.cpp \
+        $$PWD/analysisforms/Bain/bainttestbayesianpairedsamplesform.cpp \
         $$PWD/analysisforms/R11tLearn/r11tlearnform.cpp \
-		$$PWD/simplecrypt.cpp \
-    $$PWD/importers/convertedstringcontainer.cpp
+        $$PWD/simplecrypt.cpp \
+        $$PWD/importers/convertedstringcontainer.cpp
 
 HEADERS  += \
         $$PWD/aboutdialog.h \
@@ -298,6 +302,7 @@ HEADERS  += \
         $$PWD/analysisforms/binomialtestbayesianform.h \
         $$PWD/analysisforms/bffromtform.h \
         $$PWD/ribbons/ribbonsummarystatistics.h \
+        $$PWD/ribbons/ribbonbain.h \
         $$PWD/variableswidget.h \
         $$PWD/variablespage/levelstablemodel.h \
         $$PWD/variablespage/variablestablemodel.h \
@@ -357,9 +362,12 @@ HEADERS  += \
         $$PWD/analysisforms/SummaryStatistics/summarystatsregressionlinearbayesianform.h \
         $$PWD/analysisforms/SummaryStatistics/summarystatscorrelationbayesianpairsform.h \
         $$PWD/analysisforms/R11tLearn/r11tlearnform.h \
-		$$PWD/simplecrypt.h \
-		$$PWD/simplecryptkey.h \
-    $$PWD/importers/convertedstringcontainer.h
+        $$PWD/analysisforms/Bain/bainttestbayesianindependentsamplesform.h \
+        $$PWD/analysisforms/Bain/bainttestbayesianonesampleform.h \
+        $$PWD/analysisforms/Bain/bainttestbayesianpairedsamplesform.h \
+        $$PWD/simplecrypt.h \
+        $$PWD/simplecryptkey.h \
+        $$PWD/importers/convertedstringcontainer.h
 
 FORMS += \
         $$PWD/analysisforms/anovabayesianform.ui \
@@ -402,6 +410,7 @@ FORMS += \
         $$PWD/analysisforms/binomialtestbayesianform.ui \
         $$PWD/analysisforms/bffromtform.ui \
         $$PWD/ribbons/ribbonsummarystatistics.ui \
+        $$PWD/ribbons/ribbonbain.ui \
         $$PWD/variableswidget.ui \
         $$PWD/backstage/authwidget.ui\
         $$PWD/aboutdialog.ui \
@@ -415,6 +424,9 @@ FORMS += \
         $$PWD/analysisforms/SummaryStatistics/summarystatsbinomialtestbayesianform.ui \
         $$PWD/analysisforms/SummaryStatistics/summarystatsregressionlinearbayesianform.ui \
         $$PWD/analysisforms/SummaryStatistics/summarystatscorrelationbayesianpairsform.ui \
+        $$PWD/analysisforms/Bain/bainttestbayesianindependentsamplesform.ui \
+        $$PWD/analysisforms/Bain/bainttestbayesianonesampleform.ui \
+        $$PWD/analysisforms/Bain/bainttestbayesianpairedsamplesform.ui \
         $$PWD/analysisforms/R11tLearn/r11tlearnform.ui
 
 
