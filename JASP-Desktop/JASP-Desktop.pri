@@ -171,9 +171,12 @@ SOURCES += $$PWD/main.cpp \
         $$PWD/analysisforms/SummaryStatistics/summarystatsbinomialtestbayesianform.cpp \
         $$PWD/analysisforms/SummaryStatistics/summarystatsregressionlinearbayesianform.cpp \
         $$PWD/analysisforms/SummaryStatistics/summarystatscorrelationbayesianpairsform.cpp \
+        $$PWD/analysisforms/Bain/bainttestbayesianindependentsamplesform.cpp \
+        $$PWD/analysisforms/Bain/bainttestbayesianonesampleform.cpp \
+        $$PWD/analysisforms/Bain/bainttestbayesianpairedsamplesform.cpp \
         $$PWD/analysisforms/R11tLearn/r11tlearnform.cpp \
-		$$PWD/simplecrypt.cpp \
-    $$PWD/importers/convertedstringcontainer.cpp
+        $$PWD/simplecrypt.cpp \
+        $$PWD/importers/convertedstringcontainer.cpp
 
 HEADERS  += \
         $$PWD/aboutdialog.h \
@@ -359,9 +362,12 @@ HEADERS  += \
         $$PWD/analysisforms/SummaryStatistics/summarystatsregressionlinearbayesianform.h \
         $$PWD/analysisforms/SummaryStatistics/summarystatscorrelationbayesianpairsform.h \
         $$PWD/analysisforms/R11tLearn/r11tlearnform.h \
-		$$PWD/simplecrypt.h \
-		$$PWD/simplecryptkey.h \
-    $$PWD/importers/convertedstringcontainer.h
+        $$PWD/analysisforms/Bain/bainttestbayesianindependentsamplesform.h \
+        $$PWD/analysisforms/Bain/bainttestbayesianonesampleform.h \
+        $$PWD/analysisforms/Bain/bainttestbayesianpairedsamplesform.h \
+        $$PWD/simplecrypt.h \
+        $$PWD/simplecryptkey.h \
+        $$PWD/importers/convertedstringcontainer.h
 
 FORMS += \
         $$PWD/analysisforms/anovabayesianform.ui \
@@ -418,6 +424,9 @@ FORMS += \
         $$PWD/analysisforms/SummaryStatistics/summarystatsbinomialtestbayesianform.ui \
         $$PWD/analysisforms/SummaryStatistics/summarystatsregressionlinearbayesianform.ui \
         $$PWD/analysisforms/SummaryStatistics/summarystatscorrelationbayesianpairsform.ui \
+        $$PWD/analysisforms/Bain/bainttestbayesianindependentsamplesform.ui \
+        $$PWD/analysisforms/Bain/bainttestbayesianonesampleform.ui \
+        $$PWD/analysisforms/Bain/bainttestbayesianpairedsamplesform.ui \
         $$PWD/analysisforms/R11tLearn/r11tlearnform.ui
 
 
