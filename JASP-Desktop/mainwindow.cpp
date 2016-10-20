@@ -149,6 +149,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->ribbonSEM->setDataSetLoaded(false);
 	ui->ribbonR11tLearn->setDataSetLoaded(false);
 	ui->ribbonSummaryStatistics->setDataSetLoaded(false);
+	ui->ribbonBain->setDataSetLoaded(false);
 
 #ifdef QT_DEBUG
 	ui->webViewResults->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
@@ -196,6 +197,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->ribbonSEM, SIGNAL(itemSelected(QString)), this, SLOT(itemSelected(QString)));
 	connect(ui->ribbonR11tLearn, SIGNAL(itemSelected(QString)), this, SLOT(itemSelected(QString)));
 	connect(ui->ribbonSummaryStatistics, SIGNAL(itemSelected(QString)), this, SLOT(itemSelected(QString)));
+	connect(ui->ribbonBain, SIGNAL(itemSelected(QString)), this, SLOT(itemSelected(QString)));
 	connect(ui->backStage, SIGNAL(dataSetIORequest(FileEvent*)), this, SLOT(dataSetIORequest(FileEvent*)));
 	connect(ui->backStage, SIGNAL(exportSelected(QString)), this, SLOT(exportSelected(QString)));
 
@@ -743,6 +745,10 @@ void MainWindow::tabChanged(int index)
 		{
 			ui->ribbon->setCurrentIndex(3);
 		}
+		else if (currentActiveTab == "Bain")
+		{
+			ui->ribbon->setCurrentIndex(4);
+		}
 	}
 }
 
@@ -802,7 +808,7 @@ void MainWindow::dataSetIORequest(FileEvent *event)
 #endif
 	}
 	else if (event->operation() == FileEvent::FileSave)
-	{		
+	{
 		if (_analyses->count() > 0)
 		{
 			_package->setWaitingForReady();
@@ -1090,6 +1096,15 @@ void MainWindow::updateUIFromOptions()
 	else
 		ui->tabBar->removeTab("Summary Stats");
 
+	QVariant bain = _settings.value("toolboxes/bain", false);
+	if (bain.canConvert(QVariant::Bool) && bain.toBool())
+	{
+		ui->tabBar->addTab("Bain");
+	}
+	else
+	{
+		ui->tabBar->removeTab("Bain");
+	}
 }
 
 void MainWindow::resultsPageLoaded(bool success)

@@ -126,7 +126,7 @@
             </size>
            </property>
            <property name="text">
-            <string>T-Tests</string>
+            <string>Informed T-Tests</string>
            </property>
            <property name="icon">
             <iconset resource="../resources/icons.qrc">
@@ -155,11 +155,11 @@
             </size>
            </property>
            <property name="text">
-            <string>Frequencies</string>
+            <string>Informed Regression</string>
            </property>
            <property name="icon">
             <iconset resource="../resources/icons.qrc">
-             <normaloff>:/icons/analysis-bayesian-crosstabs.svg</normaloff>:/icons/analysis-bayesian-crosstabs.svg</iconset>
+             <normaloff>:/icons/analysis-bayesian-regression.svg</normaloff>:/icons/analysis-bayesian-regression.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -184,11 +184,11 @@
             </size>
            </property>
            <property name="text">
-            <string>Regression</string>
+            <string>Informed ANOVA</string>
            </property>
            <property name="icon">
             <iconset resource="../resources/icons.qrc">
-             <normaloff>:/icons/analysis-bayesian-regression.svg</normaloff>:/icons/analysis-bayesian-regression.svg</iconset>
+             <normaloff>:/icons/analysis-classical-anova.svg</normaloff>:/icons/analysis-classical-anova.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
