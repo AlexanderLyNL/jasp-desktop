@@ -20,6 +20,7 @@
 #include "ui_mainwindow.h"
 
 #include "analysisforms/descriptivesform.h"
+#include "analysisforms/reliabilityanalysisform.h"
 
 #include "analysisforms/ttestbayesianindependentsamplesform.h"
 #include "analysisforms/ttestbayesianpairedsamplesform.h"
@@ -28,32 +29,32 @@
 #include "analysisforms/ttestpairedsamplesform.h"
 #include "analysisforms/ttestonesampleform.h"
 
-
 #include "analysisforms/anovaonewayform.h"
 #include "analysisforms/anovaform.h"
 #include "analysisforms/anovarepeatedmeasuresform.h"
 #include "analysisforms/ancovaform.h"
 #include "analysisforms/anovamultivariateform.h"
 #include "analysisforms/ancovamultivariateform.h"
-
 #include "analysisforms/anovabayesianform.h"
 #include "analysisforms/ancovabayesianform.h"
 #include "analysisforms/anovarepeatedmeasuresbayesianform.h"
 
 #include "analysisforms/regressionlinearform.h"
 #include "analysisforms/regressionlinearbayesianform.h"
-#include "analysisforms/regressionloglinearform.h"
-#include "analysisforms/regressionloglinearbayesianform.h"
 #include "analysisforms/correlationform.h"
 #include "analysisforms/correlationbayesianform.h"
 #include "analysisforms/correlationbayesianpairsform.h"
 #include "analysisforms/correlationpartialform.h"
+
+#include "analysisforms/regressionloglinearform.h"
+#include "analysisforms/regressionloglinearbayesianform.h"
 #include "analysisforms/contingencytablesform.h"
 #include "analysisforms/contingencytablesbayesianform.h"
-
 #include "analysisforms/binomialtestform.h"
 #include "analysisforms/binomialtestbayesianform.h"
+
 #include "analysisforms/bffromtform.h"
+
 #include "analysisforms/SummaryStatistics/summarystatsttestbayesianindependentsamplesform.h"
 #include "analysisforms/SummaryStatistics/summarystatsttestbayesianpairedsamplesform.h"
 #include "analysisforms/SummaryStatistics/summarystatsttestbayesianonesampleform.h"
@@ -61,10 +62,13 @@
 #include "analysisforms/SummaryStatistics/summarystatsregressionlinearbayesianform.h"
 #include "analysisforms/SummaryStatistics/summarystatscorrelationbayesianpairsform.h"
 
+#include "analysisforms/Bain/bainttestbayesianindependentsamplesform.h"
+#include "analysisforms/Bain/bainttestbayesianpairedsamplesform.h"
+#include "analysisforms/Bain/bainttestbayesianonesampleform.h"
+
 #include "analysisforms/SEM/semsimpleform.h"
 #include "analysisforms/R11tLearn/r11tlearnform.h"
 
-#include "analysisforms/reliabilityanalysisform.h"
 #include "analysisforms/exploratoryfactoranalysisform.h"
 #include "analysisforms/principalcomponentanalysisform.h"
 
@@ -94,8 +98,6 @@
 #include "tempfiles.h"
 #include "processinfo.h"
 #include "appinfo.h"
-
-
 #include "lrnam.h"
 #include "activitylog.h"
 #include "aboutdialog.h"
@@ -566,9 +568,9 @@ AnalysisForm* MainWindow::loadForm(const string name)
 	else if (name == "ReliabilityAnalysis")
 		form = new ReliabilityAnalysisForm(contentArea);
 	else if (name == "ExploratoryFactorAnalysis")
-    form = new ExploratoryFactorAnalysisForm(contentArea);
-  else if (name == "PrincipalComponentAnalysis")
-    form = new PrincipalComponentAnalysisForm(contentArea);
+		form = new ExploratoryFactorAnalysisForm(contentArea);
+	else if (name == "PrincipalComponentAnalysis")
+		form = new PrincipalComponentAnalysisForm(contentArea);
 	else if (name == "SummaryStatsTTestBayesianOneSample")
 		form = new SummaryStatsTTestBayesianOneSampleForm(contentArea);
 	else if (name == "SummaryStatsTTestBayesianIndependentSamples")
@@ -581,6 +583,12 @@ AnalysisForm* MainWindow::loadForm(const string name)
 		form = new SummaryStatsRegressionLinearBayesianForm(contentArea);
 	else if (name == "SummaryStatsCorrelationBayesianPairs")
 		form = new SummaryStatsCorrelationBayesianPairsForm(contentArea);
+	else if (name == "BainTTestBayesianOneSample")
+		form = new BainTTestBayesianOneSampleForm(contentArea);
+	else if (name == "BainTTestBayesianIndependentSamples")
+		form = new BainTTestBayesianIndependentSamplesForm(contentArea);
+	else if (name == "BainTTestBayesianPairedSamples")
+		form = new BainTTestBayesianPairedSamplesForm(contentArea);
 	else
 		qDebug() << "MainWindow::loadForm(); form not found : " << name.c_str();
 

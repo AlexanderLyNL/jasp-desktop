@@ -118,7 +118,7 @@
           <number>5</number>
          </property>
          <item row="0" column="0">
-          <widget class="RibbonButton" name="bfFromTButton">
+          <widget class="RibbonButton" name="informedTTestButton">
            <property name="minimumSize">
             <size>
              <width>76</width>
@@ -147,7 +147,7 @@
           </widget>
          </item>
          <item row="0" column="2">
-          <widget class="RibbonButton" name="frequenciesButton">
+          <widget class="RibbonButton" name="informedRegressionButton">
            <property name="minimumSize">
             <size>
              <width>76</width>
@@ -176,7 +176,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="RibbonButton" name="regressionButton">
+          <widget class="RibbonButton" name="informedANOVAButton">
            <property name="minimumSize">
             <size>
              <width>76</width>
