@@ -28,32 +28,32 @@ RibbonBain::RibbonBain(QWidget *parent) :
 {
 	ui->setupUi(this);
 
-	addRibbonButton(ui->bfFromTButton);
-	addRibbonButton(ui->regressionButton);
-	addRibbonButton(ui->frequenciesButton);
-	ui->bfFromTButton->setDataSetNotNeeded();
-	ui->regressionButton->setDataSetNotNeeded();
-	ui->frequenciesButton->setDataSetNotNeeded();
+	addRibbonButton(ui->informedTTestButton);
+	addRibbonButton(ui->informedANOVAButton);
+	addRibbonButton(ui->informedRegressionButton);
+	ui->informedTTestButton->setDataSetNotNeeded();
+	ui->informedANOVAButton->setDataSetNotNeeded();
+	ui->informedRegressionButton->setDataSetNotNeeded();
 
 	QMenu *menu;
 
 	menu = new QMenu(this);
-	menu->addAction(QString("Bayesian Independent Samples T-Test"), this, SLOT(itemSelected()))->setObjectName("SummaryStatsTTestBayesianIndependentSamples");
-	menu->addAction(QString("Bayesian Paired Samples T-Test"), this, SLOT(itemSelected()))->setObjectName("SummaryStatsTTestBayesianPairedSamples");
-	menu->addAction(QString("Bayesian One Sample T-Test"), this, SLOT(itemSelected()))->setObjectName("SummaryStatsTTestBayesianOneSample");
+	menu->addAction(QString("Bayesian Independent Samples T-Test"), this, SLOT(itemSelected()))->setObjectName("BainTTestBayesianIndependentSamples");
+	menu->addAction(QString("Bayesian Paired Samples T-Test"), this, SLOT(itemSelected()))->setObjectName("BainTTestBayesianPairedSamples");
+	menu->addAction(QString("Bayesian One Sample T-Test"), this, SLOT(itemSelected()))->setObjectName("BainTTestBayesianOneSample");
 
-	ui->bfFromTButton->setMenu(menu);
-
-	menu = new QMenu(this);
-	menu->addAction(QString("Bayesian Correlation Pairs"), this, SLOT(itemSelected()))->setObjectName("SummaryStatsCorrelationBayesianPairs");
-	menu->addAction(QString("Bayesian Linear Regression"), this, SLOT(itemSelected()))->setObjectName("SummaryStatsRegressionLinearBayesian");
-
-	ui->regressionButton->setMenu(menu);
+	ui->informedTTestButton->setMenu(menu);
 
 	menu = new QMenu(this);
-	menu->addAction(QString("Bayesian Binomial Test"), this, SLOT(itemSelected()))->setObjectName("SummaryStatsBinomialTestBayesian");
+	menu->addAction(QString("Bayesian ANOVA"), this, SLOT(itemSelected()))->setObjectName("AnovaBayesian");
+	menu->addAction(QString("Bayesian Repeated Measures ANOVA"), this, SLOT(itemSelected()))->setObjectName("AnovaRepeatedMeasuresBayesian");
 
-	ui->frequenciesButton->setMenu(menu);
+	ui->informedANOVAButton->setMenu(menu);
+
+	menu = new QMenu(this);
+	menu->addAction(QString("Bayesian Binomial Test"), this, SLOT(itemSelected()))->setObjectName("BinomialTestBayesian");
+
+	ui->informedRegressionButton->setMenu(menu);
 }
 
 RibbonBain::~RibbonBain()
