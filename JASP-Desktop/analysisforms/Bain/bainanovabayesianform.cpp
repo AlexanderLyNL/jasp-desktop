@@ -41,19 +41,11 @@ BainAnovaBayesianForm::BainAnovaBayesianForm(QWidget *parent) :
 	_fixedFactorsListModel->setVariableTypesSuggested(Column::ColumnTypeNominal | Column::ColumnTypeOrdinal);
 	ui->fixedFactors->setModel(_fixedFactorsListModel);
 
-	_randomFactorsListModel = new TableModelVariablesAssigned(this);
-	_randomFactorsListModel->setSource(&_availableVariablesModel);
-	_randomFactorsListModel->setVariableTypesSuggested(Column::ColumnTypeNominal | Column::ColumnTypeOrdinal);
-	ui->randomFactors->setModel(_randomFactorsListModel);
-
 	ui->buttonAssignDependent->setSourceAndTarget(ui->listAvailableFields, ui->dependent);
 	ui->buttonAssignFixed->setSourceAndTarget(ui->listAvailableFields, ui->fixedFactors);
-	ui->buttonAssignRandom->setSourceAndTarget(ui->listAvailableFields, ui->randomFactors);
 
 	_anovaModel = new TableModelAnovaModel(this);
 	_anovaModel->setPiecesCanBeAssigned(false);
-	ui->modelTerms->setModel(_anovaModel);
-	ui->modelTerms->hide();
 
 	ui->advancedOptions->hide();
 
@@ -70,10 +62,6 @@ BainAnovaBayesianForm::BainAnovaBayesianForm(QWidget *parent) :
 	connect(_fixedFactorsListModel, SIGNAL(assignedTo(Terms)), _anovaModel, SLOT(addFixedFactors(Terms)));
 	connect(_fixedFactorsListModel, SIGNAL(unassigned(Terms)), _anovaModel, SLOT(removeVariables(Terms)));
 
-	connect(_randomFactorsListModel, SIGNAL(assignmentsChanging()), this, SLOT(factorsChanging()));
-	connect(_randomFactorsListModel, SIGNAL(assignmentsChanged()), this, SLOT(factorsChanged()));
-	connect(_randomFactorsListModel, SIGNAL(assignedTo(Terms)), _anovaModel, SLOT(addRandomFactors(Terms)));
-	connect(_randomFactorsListModel, SIGNAL(unassigned(Terms)), _anovaModel, SLOT(removeVariables(Terms)));
 }
 
 BainAnovaBayesianForm::~BainAnovaBayesianForm()
@@ -87,7 +75,7 @@ void BainAnovaBayesianForm::bindTo(Options *options, DataSet *dataSet)
 
 	factorsChanging();
 
-	_anovaModel->setVariables(_fixedFactorsListModel->assigned(), _randomFactorsListModel->assigned());
+    _anovaModel->setVariables(_fixedFactorsListModel->assigned());
 
 	factorsChanged();
 }

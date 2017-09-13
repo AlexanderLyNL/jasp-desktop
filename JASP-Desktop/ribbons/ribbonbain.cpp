@@ -35,22 +35,22 @@ RibbonBain::RibbonBain(QWidget *parent) :
 	QMenu *menu;
 
 	menu = new QMenu(this);
-	menu->addAction(QString("Bayesian Independent Samples T-Test"), this, SLOT(itemSelected()))->setObjectName("BainTTestBayesianIndependentSamples");
-	menu->addAction(QString("Bayesian Paired Samples T-Test"), this, SLOT(itemSelected()))->setObjectName("BainTTestBayesianPairedSamples");
-	menu->addAction(QString("Bayesian One Sample T-Test"), this, SLOT(itemSelected()))->setObjectName("BainTTestBayesianOneSample");
+    menu->addAction(QString("BaIn Independent Samples T-Test"), this, SLOT(itemSelected()))->setObjectName("BainTTestBayesianIndependentSamples");
+    menu->addAction(QString("BaIn Paired Samples T-Test"), this, SLOT(itemSelected()))->setObjectName("BainTTestBayesianPairedSamples");
+    menu->addAction(QString("BaIn One Sample T-Test"), this, SLOT(itemSelected()))->setObjectName("BainTTestBayesianOneSample");
 
 	ui->ttestButton->setMenu(menu);
 
 	menu = new QMenu(this);
-	menu->addAction(QString("Bayesian ANOVA"), this, SLOT(itemSelected()))->setObjectName("BainAnovaBayesian");
-	menu->addAction(QString("Bayesian Repeated Measures ANOVA"), this, SLOT(itemSelected()))->setObjectName("BainAnovaRepeatedMeasuresBayesian");
-	menu->addAction(QString("Bayesian ANCOVA"), this, SLOT(itemSelected()))->setObjectName("BainAncovaBayesian");
+    menu->addAction(QString("BaIn ANOVA"), this, SLOT(itemSelected()))->setObjectName("BainAnovaBayesian");
+    menu->addAction(QString("BaIn Repeated Measures ANOVA"), this, SLOT(itemSelected()))->setObjectName("BainAnovaRepeatedMeasuresBayesian");
+    menu->addAction(QString("BaIn ANCOVA"), this, SLOT(itemSelected()))->setObjectName("BainAncovaBayesian");
 
 	ui->anovaButton->setMenu(menu);
 
 	menu = new QMenu(this);
-	menu->addAction(QString("Bayesian Correlation Pairs"), this, SLOT(itemSelected()))->setObjectName("BainCorrelationBayesian");
-	menu->addAction(QString("Bayesian Linear Regression"), this, SLOT(itemSelected()))->setObjectName("BainRegressionLinearBayesian");
+    menu->addAction(QString("BaIn Correlation Pairs"), this, SLOT(itemSelected()))->setObjectName("BainCorrelationBayesian");
+    menu->addAction(QString("BaIn Linear Regression"), this, SLOT(itemSelected()))->setObjectName("BainRegressionLinearBayesian");
 
 	ui->regressionButton->setMenu(menu);
 }

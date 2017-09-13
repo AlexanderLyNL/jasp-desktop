@@ -48,8 +48,6 @@ BainTTestBayesianPairedSamplesForm::BainTTestBayesianPairedSamplesForm(QWidget *
 
 	ItemModelSelectVariable *itemSelectModel = new ItemModelSelectVariable(this);
 	itemSelectModel->setSource(&_availableVariablesModel);
-
-	ui->model_constraints->hide();
 }
 
 BainTTestBayesianPairedSamplesForm::~BainTTestBayesianPairedSamplesForm()

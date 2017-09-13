@@ -17,14 +17,6 @@
 
 BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", callback=function(...) 0, ...) {
     
-    if(is.null(options()$BFMaxModels)) options(BFMaxModels = 50000)
-    if(is.null(options()$BFpretestIterations)) options(BFpretestIterations = 100)
-    if(is.null(options()$BFapproxOptimizer)) options(BFapproxOptimizer = "optim")
-    if(is.null(options()$BFapproxLimits)) options(BFapproxLimits = c(-15,15))
-    if(is.null(options()$BFprogress)) options(BFprogress = interactive())
-    if(is.null(options()$BFfactorsMax)) options(BFfactorsMax = 5)
-    
-    
     all.variables <- unlist(options$variables)
     
     if (is.null(dataset))
@@ -70,92 +62,71 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
     
     # Set the title of the Bayes Factor column
     
-    if (bf.type == "BF10") {
+    if(!options$hypothesis == "biggerSmaller"){
         
-        BFH1H0 <- TRUE
+        if (bf.type == "LogBF10") {
+            
+            BFH1H0 <- TRUE
+            
+            bf.title <- "Log(BF equal vs - )"
+            
+        } else if (bf.type == "BF01") {
+            
+            BFH1H0 <- FALSE
+            
+            bf.title <- "BF equal vs - "
+            
+        } 
         
-        if (options$hypothesis == "notEqualToTestValue") {
-            bf.title <- "BF\u2081\u2080"
-        }
-        if (options$hypothesis == "greaterThanTestValue") {
-            bf.title <- "BF\u208A\u2080"
-        }
-        if (options$hypothesis == "lessThanTestValue") {
-            bf.title <- "BF\u208B\u2080"
-        }
-        if(options$hypothesis == "allTypes"){
-            bf.title <- "BF\u2081\u2080" # same as not equal to
-        }
+    } else {
         
-    } else if (bf.type == "LogBF10") {
-        
-        BFH1H0 <- TRUE
-        
-        if (options$hypothesis == "notEqualToTestValue") {
-            bf.title <- "Log(\u2009\u0042\u0046\u2081\u2080\u2009)"
-        }
-        if (options$hypothesis == "greaterThanTestValue") {
-            bf.title <- "Log(\u2009\u0042\u0046\u208A\u2080\u2009)"
-        }
-        if (options$hypothesis == "lessThanTestValue") {
-            bf.title <- "Log(\u2009\u0042\u0046\u208B\u2080\u2009)"
-        }
-        if(options$hypothesis == "allTypes"){
-            bf.title <- "Log(\u2009\u0042\u0046\u2081\u2080\u2009)" # same as not equal to
+        if (bf.type == "LogBF10") {
+            
+            BFH1H0 <- TRUE
+            
+            bf.title <- "Log(BF bigger vs - )"
+            
+        } else if (bf.type == "BF01") {
+            
+            BFH1H0 <- FALSE
+            
+            bf.title <- "BF bigger vs - "
+            
         }
         
-    } else if (bf.type == "BF01") {
-        
-        BFH1H0 <- FALSE
-        
-        if (options$hypothesis == "notEqualToTestValue") {
-            bf.title <- "BF\u2080\u2081"
-        }
-        if (options$hypothesis == "greaterThanTestValue") {
-            bf.title <- "BF\u2080\u208A"
-        }
-        if (options$hypothesis == "lessThanTestValue") {
-            bf.title <- "BF\u2080\u208B"
-        }
-        if(options$hypothesis == "allTypes"){
-            bf.title <- "BF\u2080\u2081" # same as not equal to
-        }
     }
-    
     
     # Make the fields for the t-test table
     
     if (options$hypothesis == "notEqualToTestValue" | 
         options$hypothesis == "greaterThanTestValue" | 
-        options$hypothesis == 'lessThanTestValue') {
-        
+        options$hypothesis == 'lessThanTestValue' | 
+        options$hypothesis == "biggerSmaller") {
         
         fields <- list(
             list(name="Variable", type="string", title=""),
             list(name = "hypothesis[type1]", type = "string", title = "Hypothesis"),
-            list(name="BF[type1]", type="number", format="sf:4", title=bf.title),
-            list(name="pmp[type1]", type="number", format="sf:4", title="Posterior probability"),
+            list(name="BF[type1]", type="number", format="dp:4", title=bf.title),
+            list(name="pmp[type1]", type="number", format="dp:4", title="Posterior probability"),
             list(name = "hypothesis[type2]", type = "string", title = "Hypothesis"),
-            list(name="BF[type2]", type="number", format="sf:4", title=bf.title),
-            list(name="pmp[type2]", type="number", format="sf:4", title="Posterior probability"))
+            list(name="BF[type2]", type="string", format="dp:4", title=bf.title),
+            list(name="pmp[type2]", type="number", format="dp:4", title="Posterior probability"))
         
     }
     
     if(options$hypothesis == "allTypes"){
         
-        type <- 4
-        
         fields <- list(
             list(name="Variable", type="string", title=""),
             list(name = "type[greater]", type = "string", title = "Hypothesis"),
-            list(name="BF[greater]", type="number", format="sf:4", title=bf.title),
-            list(name="pmp[greater]", type="number", format="sf:4", title="Posterior probability"),
+            list(name="BF[greater]", type="number", format="dp:0", title=bf.title),
+            list(name="pmp[greater]", type="number", format="dp:4", title="Posterior probability"),
             list(name = "type[less]", type = "string", title = "Hypothesis"),
-            list(name="BF[less]", type="number", format="sf:4", title="bf.title"),
-            list(name="pmp[less]", type="number", format="sf:4", title="Posterior probability"),
+            list(name="BF[less]", type="number", format="dp:4", title="bf.title"),
+            list(name="pmp[less]", type="number", format="dp:4", title="Posterior probability"),
             list(name = "type[equal]", type = "string", title = "Hypothesis"),
-            list(name = "BF[equal]", type = "number", title = bf.title,format="sf:4"),
-            list(name="pmp[equal]", type="number", format="sf:4", title="Posterior probability"))
+            list(name = "BF[equal]", type = "number", title = bf.title,format="dp:4"),
+            list(name="pmp[equal]", type="number", format="dp:4", title="Posterior probability"))
         
     }
     
@@ -171,7 +142,7 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
         
         type <- 1
         
-        note <- "For all tests, the alternative hypothesis specifies that the mean does not equal "
+        note <- paste("For all tests, H\u2280: mu = ", options$testValue," is tested against H\u2081: mu \u2260 ", sep = "")
         message <- paste0(note, options$testValue, ".")
         .addFootnote(footnotes, symbol="<em>Note.</em>", text=message)
         
@@ -181,8 +152,7 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
         
         type <- 2
         
-        note <- "For all tests, the alternative hypothesis specifies that the mean
-					is greater than "
+        note <- paste("For all tests, H\u2080: mu = ", options$testValue, " is tested against H\u2081: mu > ", sep = "")
         message <- paste0(note, options$testValue, ".")
         .addFootnote(footnotes, symbol="<em>Note.</em>", text=message)
         
@@ -190,22 +160,28 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
         
         type <- 3
         
-        note <- "For all tests, the alternative hypothesis specifies that the mean
-					is smaller than "
+        note <- paste("For all tests, H\u2080: mu = ", options$testValue, " is tested against H\u2081: mu < ", sep = "")
+        message <- paste0(note, options$testValue, ".")
+        .addFootnote(footnotes, symbol="<em>Note.</em>", text=message)
+        
+    } else if (options$hypothesis == "biggerSmaller"){
+        
+        type <- 4
+        
+        note <- paste("For all tests, H\u2080: mu > ", options$testValue, " and H\u2081: mu < ", sep = "")
         message <- paste0(note, options$testValue, ".")
         .addFootnote(footnotes, symbol="<em>Note.</em>", text=message)
         
     } else if (options$hypothesis == "allTypes"){
         
-        note <- "For all tests, all three hypothesis are tested with test value "
+        type <- 5
+        
+        note <- paste("For all tests, H\u2081: mu > ", options$testValue, " and H\u2082: mu < ", options$testValue, " are tested against H\u2080: mu = ", sep = "")
         message <- paste0(note, options$testValue, ".")
         .addFootnote(footnotes, symbol="<em>Note.</em>", text=message)
         
-    } 
-    
-    # if (options$descriptives || options$descriptivesPlots)
-    # 	results[["descriptives"]] <- list(title="Descriptives")
-    
+    }
+ 
     # Make state lists
     
     plotGroups <- list()
@@ -291,9 +267,6 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
                 descriptivesPlot <- list()
                 
                 descriptivesPlot[["title"]] <- variable
-                # descriptivesPlot[["width"]] <- options$plotWidth
-                # descriptivesPlot[["height"]] <- options$plotHeight
-                # descriptivesPlot[["custom"]] <- list(width="plotWidth", height="plotHeight")
                 descriptivesPlot[["status"]] <- "waiting"
                 descriptivesPlot[["data"]] <- ""
                 
@@ -322,9 +295,6 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
                 BFplot <- list()
                 
                 BFplot[["title"]] <- variable
-                # BFplot[["width"]] <- options$plotWidth
-                # BFplot[["height"]] <- options$plotHeight
-                # BFplot[["custom"]] <- list(width="plotWidth", height="plotHeight")
                 BFplot[["status"]] <- "waiting"
                 BFplot[["data"]] <- ""
                 
@@ -474,15 +444,19 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
                     result_test <-list(Variable=variable, "hypothesis[type1]" = "Equal", "BF[type1]"=.clear(NaN), "pmp[type1]" = .clear(NaN),
                                        "hypothesis[type2]" = "Smaller", "BF[type2]" = .clear(NaN), "pmp[type2]" = .clear(NaN),.footnotes = list(BF=list(index2)))
                 }
+                if (options$hypothesis == "biggerSmaller"){
+                    result_test <-list(Variable=variable, "hypothesis[type1]" = "Bigger", "BF[type1]"=.clean(NaN), "pmp[type1]" = .clean(NaN),
+                                       "hypothesis[type2]" = "Smaller", "BF[type2]" = "", "pmp[type2]" = .clean(NaN), .footnotes = list(BF=list(index2))) 
+                }
                 if(options$hypothesis == "allTypes"){
                     result_test <-list(Variable=variable, 
-                                       "type[greater]" = "Equal vs. Bigger",
+                                       "type[greater]" = "Equal",
                                        "BF[greater]"= .clear(NaN), 
                                        "pmp[greater]" = .clear(NaN),
-                                       "type[less]"= "Equal vs. Smaller",
+                                       "type[less]"= "Smaller",
                                        "BF[less]" = .clear(NaN), 
                                        "pmp[less]" = .clear(NaN),
-                                       "type[equal]" = "Bigger vs. Smaller",
+                                       "type[equal]" = "Bigger",
                                        "BF[equal]" = .clear(NaN),
                                        "pmp[equal]" = .clear(NaN),
                                        .footnotes = list(BF=list(index2))) 
@@ -529,15 +503,19 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
                         result_test <-list(Variable=variable, "hypothesis[type1]" = "Equal", "BF[type1]"=.clear(NaN), "pmp[type1]" = .clear(NaN),
                                            "hypothesis[type2]" = "Smaller", "BF[type2]" = .clear(NaN), "pmp[type2]" = .clear(NaN),.footnotes = row.footnotes)
                     }
+                    if (options$hypothesis == "biggerSmaller"){
+                        result_test <-list(Variable=variable, "hypothesis[type1]" = "Bigger", "BF[type1]"=.clean(NaN), "pmp[type1]" = .clean(NaN),
+                                           "hypothesis[type2]" = "Smaller", "BF[type2]" = "", "pmp[type2]" = .clean(NaN), .footnotes = row.footnotes) 
+                    }
                     if(options$hypothesis == "allTypes"){
                         result_test <-list(Variable=variable, 
-                                           "type[greater]" = "Equal vs. Bigger",
+                                           "type[greater]" = "Equal",
                                            "BF[greater]"= .clear(NaN), 
                                            "pmp[greater]" = .clear(NaN),
-                                           "type[less]"= "Equal vs. Smaller",
+                                           "type[less]"= "Smaller",
                                            "BF[less]" = .clear(NaN), 
                                            "pmp[less]" = .clear(NaN),
-                                           "type[equal]" = "Bigger vs. Smaller",
+                                           "type[equal]" = "Bigger",
                                            "BF[equal]" = .clear(NaN),
                                            "pmp[equal]" = .clear(NaN),
                                            .footnotes = row.footnotes) 
@@ -557,66 +535,112 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
                 variableData <- variableData - options$testValue
                 
                 r <- Bain::Bain_ttestData(variableData, type = type)
+                
+                informationFootnote <- FALSE
+                
+                if(any(is.na(r))){
+                    informationFootnote <- TRUE
+                    note <- "Bayes factor could not be calculated, there are no samples drawn from the constrained area under the curve."
+                    index <- .addFootnote(footnotes, note, symbol = "<em>NaN: </em>")
+                    row.footnotes <- list(t = list(index))
+                }
+                
                 Bainresult[[i]] <- r 
                 Bainvariables[[i]] <- variable
                 
+                if(options[["bayesFactorType"]] == "LogBF10"){
+                    makeLog <- TRUE
+                } else {
+                    makeLog <- FALSE
+                }
+                
                 if(type == 1){
-                    BF_0u <- r$BF_0u
+                    
+                    if(makeLog){
+                        BF_0u <- log(r$BF_0u)
+                    } else{
+                        BF_0u <- r$BF_0u
+                    }
+                    
                     PMP_u <- r$PMP_u
                     PMP_0 <- r$PMP_0
                 } else if(type == 2){
-                    BF_01 <- r$BF_01
+                    
+                    if(makeLog){
+                        BF_01 <- log(r$BF_01)
+                    } else{
+                        BF_01 <- r$BF_01
+                    }
+                    
                     PMP_1 <- r$PMP_1
                     PMP_0 <- r$PMP_0
                 } else if(type == 3){
-                    BF_01 <- r$BF_01
+                    
+                    if(makeLog){
+                        BF_01 <- log(r$BF_01)
+                    } else{
+                        BF_01 <- r$BF_01
+                    }
+                    
                     PMP_0 <- r$PMP_0
                     PMP_1 <- r$PMP_1
-                } else if (type == 4) {
-                    BF_01 <- r$BF_01
-                    BF_02 <- r$BF_02
-                    BF_12 <- r$BF_12
+                } else if (type == 4){
+                    
+                    if(makeLog){
+                        BF_12 <- log(r$BF_12)
+                    } else{
+                        BF_12 <- r$BF_12
+                    }
+                    
+                    PMP_1 <- r$PMP_1
+                    PMP_2 <- r$PMP_2
+                    
+                    } else if(type == 5) {
+                    
+                    if(makeLog){
+                        BF_01 <- log(r$BF_01)
+                        BF_02 <- log(r$BF_02)
+                        BF_12 <- log(r$BF_12)
+                        c <- log(1)
+                    } else {
+                        BF_01 <- r$BF_01
+                        BF_02 <- r$BF_02
+                        BF_12 <- r$BF_12
+                        c <- 1
+                    }
+                    
                     PMP_0 <- r$PMP_0
                     PMP_1 <- r$PMP_1
                     PMP_2 <- r$PMP_2
                 }
                 
-                
-                # Bayes factor transformation ####
-                
-                # if (bf.type == "BF01")
-                # 	bf.raw <- 1 / bf.raw
-                # 
-                # BF10post[i] <- bf.raw
-                # BF <- .clean(bf.raw)
-                # 
-                # if (options$bayesFactorType == "LogBF10") {
-                # 
-                # 	BF <- log(BF10post[i])
-                # 	BF <- .clean(BF)
-                # }
-                
-                
                 if(options$hypothesis == "notEqualToTestValue"){
                     result_test <- list(Variable=variable, "hypothesis[type1]" = "Equal","BF[type1]"=.clean(BF_0u), "pmp[type1]" = .clean(PMP_0),
-                                        "hypothesis[type2]" = "Not equal", "BF[type]" = "", "pmp[type2]" = PMP_u)
+                                        "hypothesis[type2]" = "Not equal", "BF[type2]" = "", "pmp[type2]" = PMP_u)
                 } else if(options$hypothesis == "greaterThanTestValue"){
                     result_test <-list(Variable=variable, "hypothesis[type1]" = "Equal","BF[type1]"=.clean(BF_01), "pmp[type1]" = .clean(PMP_0),
                                       "hypothesis[type2]" = "Bigger", "BF[type2]" = "", "pmp[type2]" = .clean(PMP_1))
                 } else if(options$hypothesis == "lessThanTestValue"){
                     result_test <-list(Variable=variable, "hypothesis[type1]" = "Equal", "BF[type1]"=.clean(BF_01), "pmp[type1]" = .clean(PMP_0),
                                             "hypothesis[type2]" = "Smaller", "BF[type2]" = "", "pmp[type2]" = .clean(PMP_1))
+                } else if (options$hypothesis == "biggerSmaller"){
+                    result_test <-list(Variable=variable, "hypothesis[type1]" = "Bigger", "BF[type1]"=.clean(BF_12), "pmp[type1]" = .clean(PMP_1),
+                                       "hypothesis[type2]" = "Smaller", "BF[type2]" = "", "pmp[type2]" = .clean(PMP_2)) 
                 } else if (options$hypothesis == "allTypes"){
                     result_test <-list(Variable=variable, 
-                                       "type[greater]" = "Equal vs. Bigger",
-                                       "BF[greater]"= .clean(BF_01), 
+                                       "type[greater]" = "Equal",
+                                       "BF[greater]"= .clean(c), 
                                        "pmp[greater]" = .clean(PMP_0),
-                                       "type[less]"= "Equal vs. Smaller",
+                                       "type[less]"= "Smaller",
                                        "BF[less]" = .clean(BF_02), 
                                        "pmp[less]" = .clean(PMP_1),
-                                       "type[equal]" = "Bigger vs. Smaller",
-                                       "BF[equal]" = .clean(BF_12),
+                                       "type[equal]" = "Bigger",
+                                       "BF[equal]" = .clean(BF_01),
                                        "pmp[equal]" = .clean(PMP_2)) 
+                }
+                
+                if(informationFootnote){
+                    result_test[[".footnotes"]] <- row.footnotes
                 }
                 
                 }
@@ -670,13 +694,6 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
                     
                     }
                     
-                    # if (class(p) == "try-error") {
-                    # 
-                    # 	errorMessageTmp <- .extractErrorMessage(p)
-                    # 	errorMessage <- paste0("Plotting not possible: ", errorMessageTmp)
-                    # 	plot[["error"]] <- list(error="badData", errorMessage=errorMessage)
-                    # }
-                    
                     plot[["status"]] <- "complete"
                     
                     BFplots[[BFind]] <- plot
@@ -690,54 +707,6 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
                     return()
 
             }
-            
-            
-            # if (class(result_test) == "try-error") {
-            # 
-            # 	errorMessage <- .extractErrorMessage(result_test)
-            # 
-            # 	if (errorMessage == "x or y must not contain missing or infinite values.") {
-            # 
-            # 		errorMessage <- paste("Bayes factor is undefined - the sample contains infinity")
-            # 
-            # 		status[i] <- "error"
-            # 		plottingError[i] <- "Plotting is not possible: Bayes factor is undefined - the sample contains infinity"
-            # 
-            # 	} else if (errorMessage == "Insufficient sample size for t analysis." || errorMessage == "not enough observations") {
-            # 
-            # 		errorMessage <- "Bayes factor is undefined - too few observations"
-            # 
-            # 		status[i] <- "error"
-            # 		plottingError[i] <- "Plotting is not possible: Bayes factor is undefined - the sample has too few observations"
-            # 	}
-            # 
-            # 	status[i] <- "error"
-            # 	plottingError[i] <- paste("Plotting is not possible:", errorMessage)
-            # 
-            # 	errorFootnotes[i] <- errorMessage
-            # 
-            # 	index <- .addFootnote(footnotes, errorMessage)
-            # 
-            # 	result_test <- list(Variable=variable, BF=.clean(NaN), error="", .footnotes=list(BF=list(index)))
-            # 
-            # 	ttest.rows[[i]] <- result_test
-            # 
-            # } else {
-            
-            # if (is.na(bf.raw)) {
-            # 
-            # 	status[i] <- "error"
-            # 	plottingError[i] <- "Plotting is not possible: Bayes factor could not be calculated"
-            # } else if (is.infinite(1 / bf.raw)) {
-            # 
-            # 	status[i] <- "error"
-            # 	plottingError[i] <- "Plotting is not possible: The Bayes factor is too small"
-            # }
-            
-            # ind <- which(variableData == variableData[1])
-            # idData <- sum((ind+1)-(1:(length(ind))) == 1)
-            
-            # }
             
             i <- i + 1
         }
@@ -805,13 +774,6 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
                     
                     }
                     
-                    # if (class(p) == "try-error") {
-                    # 
-                    # 	errorMessageTmp <- .extractErrorMessage(p)
-                    # 	errorMessage <- paste0("Plotting not possible: ", errorMessageTmp)
-                    # 	plot[["error"]] <- list(error="badData", errorMessage=errorMessage)
-                    # }
-                    
                     plot[["status"]] <- "complete"
                     
                     descriptivesPlots[[descriptInd]] <- plot
@@ -842,9 +804,6 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
         keep <- c(keep, plot$data)
     }
     
-    # keep <- c(keep,lapply(BFplots, function(x) x$data))
-    # keep <- c(keep, lapply(descriptivesPlots, function(x) x$data))
-    
     if (perform == "init") {
         
         return(list(results=results, status="inited", state=state, keep=keep))
@@ -857,84 +816,3 @@ BainTTestBayesianOneSample <- function(dataset=NULL, options, perform="run", cal
         
     }
 }
-
-# .qt.shiftedT <- function(prob, parameters) {
-#     
-#     qt(prob, parameters[3]) * parameters[2] + parameters[1]
-#     
-# }
-
-# .posteriorSummaryGroupMean <- function(variable, descriptivesPlotsCredibleInterval=.95) {
-#     
-#     # Assumes that data are normally distributed
-#     # Jeffreys prior on mu and sigma: p(mu, sigma) proportional to 1/sigma
-#     # Compare Gelman et al. "Bayesian Data Analysis" for derivation of marginal posterior distribution of mu (inference for unknown mean and variance of a normal distribution)
-#     if (is.null(variable)) return(NULL)
-#     
-#     ciLower <- (1 - descriptivesPlotsCredibleInterval) / 2
-#     ciUpper <- ciLower + descriptivesPlotsCredibleInterval
-#     
-#     df <- length(variable) - 1
-#     location <- mean(variable)
-#     scale <- sd(variable) / sqrt(length(variable))
-#     
-#     outTmp <- .qt.shiftedT(c(ciLower, .5, ciUpper), parameters=c(location, scale, df))
-#     out <- list(ciLower=outTmp[1], median=outTmp[2], ciUpper=outTmp[3])
-#     
-#     return(out)
-#     
-# }
-
-# .base_breaks_y2 <- function(x, testValue){
-#     
-#     values <- c(testValue, x$ciLower, x$ciUpper)
-#     ci.pos <- c(min(values), max(values))
-#     b <- pretty(ci.pos)
-#     d <- data.frame(x=-Inf, xend=-Inf, y=min(b), yend=max(b))
-#     list(ggplot2::geom_segment(data=d, ggplot2::aes(x=x, y=y, xend=xend, yend=yend), inherit.aes=FALSE, size = 1),
-#          ggplot2::scale_y_continuous(breaks=c(min(b), testValue, max(b))))
-# }
-
-# .plotGroupMeanBayesOneSampleTtest <- function(variable=1:10, variableName="test1", testValueOpt=0, descriptivesPlotsCredibleInterval=.95) {
-#     
-#     
-#     variable <- na.omit(variable)
-#     
-#     if (any(is.infinite(variable)))
-#         stop("Plotting not possible: Variable contains infinity")
-#     
-#     testValue <- data.frame("testValue" = testValueOpt) # default zero
-#     posteriorSummary <- .posteriorSummaryGroupMean(variable=variable, descriptivesPlotsCredibleInterval=descriptivesPlotsCredibleInterval)
-#     summaryStat <- data.frame(groupingVariable=variableName, dependent=posteriorSummary$median, ciLower=posteriorSummary$ciLower, ciUpper=posteriorSummary$ciUpper)
-#     
-#     pd <- ggplot2::position_dodge(.2)
-#     
-#     p <- ggplot2::ggplot(summaryStat, ggplot2::aes(x=groupingVariable, y=dependent, group=1)) +
-#         ggplot2::geom_errorbar(ggplot2::aes(ymin=ciLower, ymax=ciUpper), colour="black", width=.2, position=pd) +
-#         ggplot2::geom_line(position=pd, size = .7) +
-#         ggplot2::geom_point(position=pd, size=4) +
-#         ggplot2::geom_hline(data = testValue, ggplot2::aes(yintercept=testValue), linetype="dashed") +
-#         ggplot2::ylab(NULL) +
-#         ggplot2::xlab(NULL) +
-#         ggplot2::theme_bw() +
-#         ggplot2::theme(	panel.grid.minor=ggplot2::element_blank(), plot.title = ggplot2::element_text(size=18),
-#                         panel.grid.major=ggplot2::element_blank(),
-#                         axis.title.x = ggplot2::element_blank(), axis.title.y = ggplot2::element_text(size=18,vjust=-1),
-#                         axis.text.x = ggplot2::element_blank(), axis.text.y = ggplot2::element_text(size=15),
-#                         panel.background = ggplot2::element_rect(fill = 'transparent', colour = NA),
-#                         plot.background = ggplot2::element_rect(fill = 'transparent', colour = NA),
-#                         legend.background = ggplot2::element_rect(fill = 'transparent', colour = NA),
-#                         panel.border = ggplot2::element_blank(), axis.line = ggplot2::element_blank(),
-#                         legend.key = ggplot2::element_blank(),
-#                         legend.title = ggplot2::element_text(size=12),
-#                         legend.text = ggplot2::element_text(size = 12),
-#                         axis.ticks = ggplot2::element_line(size = 0.5),
-#                         axis.ticks.margin = grid::unit(1,"mm"),
-#                         axis.ticks.length = grid::unit(3, "mm"),
-#                         axis.ticks.x = ggplot2::element_blank(),
-#                         plot.margin = grid::unit(c(.5,0,.5,.5), "cm")) +
-#         .base_breaks_y2(summaryStat, testValueOpt)
-#     
-#     print(p)
-#     
-# }

@@ -42,6 +42,7 @@
 
 #include "analysisforms/regressionlinearform.h"
 #include "analysisforms/regressionlinearbayesianform.h"
+#include "analysisforms/regressionlogisticform.h"
 #include "analysisforms/regressionloglinearform.h"
 #include "analysisforms/regressionloglinearbayesianform.h"
 #include "analysisforms/correlationform.h"
@@ -313,6 +314,12 @@ void MainWindow::open(QString filepath)
 
 MainWindow::~MainWindow()
 {
+	delete _engineSync;
+	if (_package && _package->dataSet)
+	{
+		_loader.free(_package->dataSet);
+		_package->reset();
+	}
 	delete ui;
 }
 
@@ -712,6 +719,8 @@ AnalysisForm* MainWindow::loadForm(const string name)
 		form = new RegressionLinearForm(contentArea);
 	else if (name == "RegressionLinearBayesian")
 		form = new RegressionLinearBayesianForm(contentArea);
+	else if (name == "RegressionLogistic")
+		form = new RegressionLogisticForm(contentArea);
 	else if (name == "RegressionLogLinear")
 		form = new RegressionLogLinearForm(contentArea);
 	else if (name == "RegressionLogLinearBayesian")
@@ -765,7 +774,7 @@ AnalysisForm* MainWindow::loadForm(const string name)
 	else if (name == "BASRegressionLinearLink")
 		form = new BASRegressionLinearLinkForm(contentArea);
 
-	else if (name == "BainTTestBayesianOneSample")
+    else if (name == "BainTTestBayesianOneSample")
 		form = new BainTTestBayesianOneSampleForm(contentArea);
 	else if (name == "BainTTestBayesianIndependentSamples")
 		form = new BainTTestBayesianIndependentSamplesForm(contentArea);
@@ -919,7 +928,7 @@ void MainWindow::tabChanged(int index)
 		{
 			ui->ribbon->setCurrentIndex(3);
 		}
-		else if(currentActiveTab == "Bain")
+        else if(currentActiveTab == "BaIn")
 		{
 			ui->ribbon->setCurrentIndex(4);
 		}
@@ -1145,6 +1154,7 @@ void MainWindow::dataSetIOCompleted(FileEvent *event)
 	{
 		if (event->successful())
 		{
+			_analyses->clear();
 			closeCurrentOptionsWidget();
 			hideOptionsPanel();
 			_tableModel->clearDataSet();
@@ -1158,6 +1168,8 @@ void MainWindow::dataSetIOCompleted(FileEvent *event)
 
 			if (_applicationExiting)
 				QApplication::exit();
+			
+			
 		}
 		else
 		{
@@ -1176,9 +1188,6 @@ void MainWindow::populateUIfromDataSet()
 {
 	_tableModel->setDataSet(_package->dataSet);
 	ui->variablesPage->setDataSet(_package->dataSet);
-
-
-	_analyses->clear();
 
 	ui->tableView->adjustAfterDataLoad(true);
 
@@ -1301,9 +1310,9 @@ void MainWindow::updateUIFromOptions()
 
 	QVariant bain = _settings.value("toolboxes/bain", false);
 	if (bain.canConvert(QVariant::Bool) && bain.toBool())
-		ui->tabBar->addTab("Bain");
+        ui->tabBar->addTab("BaIn");
 	else
-		ui->tabBar->removeTab("Bain");
+        ui->tabBar->removeTab("BaIn");
 }
 
 void MainWindow::resultsPageLoaded(bool success)

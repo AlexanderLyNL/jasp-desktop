@@ -46,7 +46,6 @@ BainTTestBayesianOneSampleForm::BainTTestBayesianOneSampleForm(QWidget *parent) 
 	ItemModelSelectVariable *model = new ItemModelSelectVariable(this);
 	model->setSource(&_availableVariablesModel);
 
-	ui->model_constraints->hide();
 }
 
 BainTTestBayesianOneSampleForm::~BainTTestBayesianOneSampleForm()

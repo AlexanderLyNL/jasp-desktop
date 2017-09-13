@@ -3,35 +3,17 @@
 	"autorun": true,
 	"version": "1.00",
 	"options": [
-		{
-			"name": "model",
-			"type": "String"
-		},
-		{
+        {
+            "name": "model",
+            "type": "String"
+        },
+        {
 			"name": "dependent",
 			"type": "Variable"
 		},
 		{
 			"name": "fixedFactors",
 			"type": "Variables"
-		},
-		{
-			"name": "randomFactors",
-			"type": "Variables"
-		},
-		{
-			"name": "modelTerms",
-			"template": [
-				{
-					"name": "components",
-					"type": "Term"
-				},
-				{
-					"name": "isNuisance",
-					"type": "Boolean"
-				}
-			],
-			"type": "Table"
 		},
 		{
 			"name": "sampleMode",
@@ -43,10 +25,6 @@
 			"type": "Integer",
 			"default": 10000,
 			"min": 0
-		},
-		{
-			"name": "effects",
-			"type": "Boolean"
 		},
 		{
 			"name": "effectsStepwise",
@@ -61,8 +39,8 @@
 			"type": "Boolean"
 		},
 		{
-			"options": [ "BF10", "BF01", "LogBF10" ],
-			"default": "BF10",
+            "options": [ "BF01", "LogBF10" ],
+            "default": "BF01",
 			"name": "bayesFactorType",
 			"type": "List"
 		},

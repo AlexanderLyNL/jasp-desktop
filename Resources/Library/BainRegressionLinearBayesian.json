@@ -16,25 +16,6 @@
 			"type": "Variables"
 		},
 		{
-			"name": "modelTerms",
-			"template": [
-				{
-					"name": "components",
-					"type": "Term"
-				},
-				{
-					"default": false,
-					"name": "isNuisance",
-					"type": "Boolean"
-				}
-			],
-			"type": "Table"
-		},
-		{
-			"name": "effects",
-			"type": "Boolean"
-		},
-		{
 			"name": "effectsStepwise",
 			"type": "Boolean"
 		},
@@ -47,8 +28,8 @@
 			"type": "Boolean"
 		},
 		{
-			"options": [ "BF10", "BF01", "LogBF10" ],
-			"default": "BF10",
+            "options": [ "BF01", "LogBF10" ],
+            "default": "BF01",
 			"name": "bayesFactorType",
 			"type": "List"
 		},
